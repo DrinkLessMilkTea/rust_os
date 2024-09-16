@@ -25,7 +25,16 @@ fn panic(info: &PanicInfo) -> ! {
 #[no_mangle] // 不改变函数名
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
+
+    rust_os::init();
+
+    unsafe {
+        *(0xdeadbeef as *mut u8) = 42;
+    }
+
     #[cfg(test)]
     test_main();
+
+    println!("it did not halt");
     loop {}
 }
