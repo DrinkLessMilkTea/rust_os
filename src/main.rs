@@ -12,13 +12,13 @@ use rust_os::println;
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    rust_os::hlt_loop();
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    rust_os::test_panic_handler(info)
+    rust_os::test_panic_handler(info);
 }
 
 // 定义入口点
@@ -28,13 +28,9 @@ pub extern "C" fn _start() -> ! {
 
     rust_os::init();
 
-    unsafe {
-        *(0xdeadbeef as *mut u8) = 42;
-    }
-
     #[cfg(test)]
     test_main();
 
-    println!("it did not halt");
-    loop {}
+    println!("it did not crash!");
+    rust_os::hlt_loop();
 }
