@@ -1,2 +1,2 @@
 # rust_os
-a small operating system used Rust
+a small x86_64 operating system used Rust
