@@ -18,7 +18,7 @@ unsafe fn active_level_4_table(physical_memory_offset: VirtAddr) -> &'static mut
     &mut *page_table_ptr
 }
 
-use x86_64::structures::paging::{mapper, OffsetPageTable};
+use x86_64::structures::paging::OffsetPageTable;
 
 /// Initialize a new OffsetPageTable.
 ///
@@ -32,24 +32,9 @@ pub unsafe fn init(physical_memory_offset: VirtAddr) -> OffsetPageTable<'static>
 }
 
 use x86_64::{
-    structures::paging::{FrameAllocator, Mapper, Page, PhysFrame, Size4KiB},
+    structures::paging::{FrameAllocator, PhysFrame, Size4KiB},
     PhysAddr,
 };
-
-/// Create an example mapping for the given page to frame `0xb8000`
-pub fn create_example_mapping(
-    page: Page,
-    mapper: &mut OffsetPageTable,
-    frame_allocator: &mut impl FrameAllocator<Size4KiB>,
-) {
-    use x86_64::structures::paging::PageTableFlags as Flags;
-
-    let frame = PhysFrame::containing_address(PhysAddr::new(0xb8000));
-    let flags = Flags::PRESENT | Flags::WRITABLE;
-
-    let map_to_result = unsafe { mapper.map_to(page, frame, flags, frame_allocator) };
-    map_to_result.expect("failed to map page to frame").flush();
-}
 
 use bootloader::bootinfo::{MemoryMap, MemoryRegionType};
 

@@ -6,11 +6,13 @@
 #![feature(abi_x86_interrupt)]
 
 use core::panic::PanicInfo;
+pub mod allocator;
 pub mod gdt;
 pub mod interrupt;
 pub mod memory;
 pub mod serial;
 pub mod vga_buffer;
+extern crate alloc;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
